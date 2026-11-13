@@ -2,9 +2,9 @@
 #include<vector>
 #include<string>
 #include<algorithm>
-#include <fstream>
-#include <sstream>
-
+#include<fstream>
+#include<sstream>
+#include<iomanip>
 
 struct Student {
     std::string name;
@@ -30,6 +30,18 @@ void sortByScore(std::vector<Student>& students){
 	       return first.name < second.name;
 	  });
 };
+
+
+
+double medianScore(const std::vector<Student>& students){
+	
+	if(students.size() % 2){
+               return 	students.at(students.size()/2).score;
+	}else{
+		return static_cast<double>((students.at(students.size()/2).score) + students.at(students.size()/2 - 1).score)/2;
+	}
+};
+
 
 int main(){
 
@@ -69,16 +81,17 @@ int main(){
         output << "沒有學生" <<"\n";
     } else {
       
+      output << std::fixed << std::setprecision(2);
       output << averageScore(students) << "\n";
 
-/*      auto top = std::max_element(students.begin(), students.end(),
-          [](const Student& first, const Student& second) {
-             return first.score < second.score;
-      }); 
-      output << top->name << "\n";
-*/      
        sortByScore(students);
-       output << students.front().name << "\n";
+       output << medianScore(students) << "\n";
+	auto passed = std::count_if(students.begin(), students.end(),
+            [](const Student& student) { return student.score >= 60; });
+      double passRate = 100.0 * passed / students.size();
+      output << "及格：" << passed  << " 人，及格率：" << passRate << "%\n";
+
+	output << students.front().name << "\n";
        for (auto && student : students){
          output << student.name << " " << student.score << "\n";
       }
