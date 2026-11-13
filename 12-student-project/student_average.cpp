@@ -5,6 +5,7 @@
 #include<fstream>
 #include<sstream>
 #include<iomanip>
+#include<iterator>
 
 struct Student {
     std::string name;
@@ -32,6 +33,21 @@ void sortByScore(std::vector<Student>& students){
 };
 
 
+char gradeForScore(int score){
+	switch(score/10){
+	    case 10: case 9:
+		return 'A';
+            case 8:
+		return 'B';
+	    case 7:
+		return 'C';
+	    case 6:
+		return 'D';
+	    default:
+		return 'F';
+	}
+	
+};
 
 double medianScore(const std::vector<Student>& students){
 	
@@ -59,7 +75,7 @@ int main(){
            std::cerr << "輸入錯誤\n";
            return 1;
         }
-        if (!(std::cin >> score) || score < 0) {
+        if (!(std::cin >> score) || score < 0 || score > 100) {
            std::cerr << "輸入錯誤\n";
            return 1;
         }
@@ -91,10 +107,27 @@ int main(){
       double passRate = 100.0 * passed / students.size();
       output << "及格：" << passed  << " 人，及格率：" << passRate << "%\n";
 
-	output << students.front().name << "\n";
-       for (auto && student : students){
-         output << student.name << " " << student.score << "\n";
+      output << students.front().name << "\n";
+      for (auto && student : students){
+         output << student.name << " " << student.score << " " << gradeForScore(student.score);
+	 output << "\n";
       }
+
+      std::vector<Student> failed;
+      std::copy_if(students.begin(), students.end(), std::back_inserter(failed),
+      [](const Student& student) { return student.score < 60; });
+
+      if(failed.empty()){
+	output << "不及格名單：無" << "\n";
+      }else{
+	output << "不及格名單：";
+	for (std::size_t index = 0; index < failed.size(); ++index){
+	    if (index > 0) output << " ";
+	    output << failed[index].name;
+	}
+	output << "\n";
+	}
+
     }  
      
     report << output.str();
