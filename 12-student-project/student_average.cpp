@@ -6,6 +6,9 @@
 #include<sstream>
 #include<iomanip>
 #include<iterator>
+#include<map>
+#include<set>
+
 
 struct Student {
     std::string name;
@@ -59,6 +62,8 @@ double medianScore(const std::vector<Student>& students){
 };
 
 
+
+
 int main(){
 
     int number;
@@ -68,10 +73,11 @@ int main(){
     }  
  
     std::vector<Student> students;
+    std::set<std::string> studentNames;
     for (int count =0; count < number; count++){
         std::string studentName;
 	int score;
-	if (!(std::cin >> studentName)) {
+	if (!(std::cin >> studentName) || !(studentNames.insert(studentName).second)) {
            std::cerr << "輸入錯誤\n";
            return 1;
         }
@@ -79,7 +85,8 @@ int main(){
            std::cerr << "輸入錯誤\n";
            return 1;
         }
-	students.push_back({studentName,score});	
+
+	students.push_back({studentName,score});
    
     }  
 
@@ -128,6 +135,18 @@ int main(){
 	output << "\n";
 	}
 
+        std::map<char, int> gradeCounts;
+	for (const Student& student : students) {
+    		++gradeCounts[gradeForScore(student.score)];
+	}
+	output << "等第統計：";	
+	for ( char grade : std::string("ABCDF")){
+		if(grade != 'A'){
+		   output << " "; 
+   		}
+		output << grade << "=" << gradeCounts[grade];
+	}
+        output << "\n";
     }  
      
     report << output.str();

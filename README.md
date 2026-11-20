@@ -15,7 +15,8 @@
 | [函式模板](09-templates/README.md) | 39 |
 | [多檔案程式](10-multi-file/README.md) | 40、41（[類別分檔](10-multi-file/rectangle/README.md)） |
 | [例外與錯誤處理](11-error-handling/README.md) | 42、43 |
-| [學生資料小專題](12-student-project/README.md) | 44–59 |
+| [學生資料小專題](12-student-project/README.md) | 44–61 |
+| [測試與除錯](13-testing/README.md) | 62–65 |
 
 ## 編譯與執行
 
